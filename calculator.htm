@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            background-color: #f9f9f9;
+        }
+
+        .result {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="result" id="output">0</div>
+        <div class="buttons">
+            <button onclick="clearOutput()">C</button>
+            <button onclick="appendToOutput('7')">7</button>
+            <button onclick="appendToOutput('8')">8</button>
+            <button onclick="appendToOutput('9')">9</button>
+            <button onclick="appendToOutput('4')">4</button>
+            <button onclick="appendToOutput('5')">5</button>
+            <button onclick="appendToOutput('6')">6</button>
+            <button onclick="appendToOutput('1')">1</button>
+            <button onclick="appendToOutput('2')">2</button>
+            <button onclick="appendToOutput('3')">3</button>
+            <button onclick="appendToOutput('0')">0</button>
+            <button onclick="appendToOutput('.')">.</button>
+            <button onclick="calculateResult('=')">=</button>
+            <button onclick="appendToOutput('+')">+</button>
+            <button onclick="appendToOutput('-')">-</button>
+            <button onclick="appendToOutput('*')">*</button>
+            <button onclick="appendToOutput('/')">/</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '';
+        let currentOperator = '';
+        let previousInput = '';
+        let resultDisplayed = false;
+
+        function appendToOutput(value) {
+            if (resultDisplayed) {
+                clearOutput();
+                resultDisplayed = false;
+            }
+            currentInput += value;
+            document.getElementById('output').textContent = currentInput;
+        }
+
+        function clearOutput() {
+            currentInput = '';
+            currentOperator = '';
+            previousInput = '';
+            document.getElementById('output').textContent = '0';
+        }
+
+        function calculateResult(operator) {
+            if (currentInput !== '' && previousInput !== '') {
+                let result = 0;
+                switch (currentOperator) {
+                    case '+':
+                        result = parseFloat(previousInput) + parseFloat(currentInput);
+                        break;
+                    case '-':
+                        result = parseFloat(previousInput) - parseFloat(currentInput);
+                        break;
+                    case '*':
+                        result = parseFloat(previousInput) * parseFloat(currentInput);
+                        break;
+                    case '/':
+                        result = parseFloat(previousInput) / parseFloat(currentInput);
+                        break;
+                }
+                currentInput = result.toString();
+                previousInput = '';
+                currentOperator = '';
+                document.getElementById('output').textContent = result;
+                resultDisplayed = true;
+            } else {
+                previousInput = currentInput;
+                currentInput = '';
+                currentOperator = operator;
+            }
+        }
+    </script>
+</body>
+</html>
